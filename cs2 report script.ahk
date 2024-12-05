@@ -1,24 +1,20 @@
-﻿#Requires AutoHotkey v2.0
-; 1280 x 960 4:3 res
-; Change the last variables of the first two Click commands as needed.
+#Requires AutoHotkey v2.0
+; USEFUL INFORMATION
+; 1280 x 960 4:3 resolution
+; Change the last variables of the first two MouseClick commands as needed.
 ; Player 1 is the player at the top of the scoreboard of the team on top,
 ; and player 10 is the bottom fragger of the bottom team.
 ; Press esc before running the loop so the scoreboard stays enabled.
-; When ready, press ctrl + 0 to start, then ctrl + a to stop.
+; When ready, press ctrl + x to start, then ctrl + a to stop.
 
+global loopToggle := 0
+global sleepTime := 30
 pX1 := 1008 ; Report button next to players
-pX2 := 850 ; Report reasons x value
+pX2 := 850 ; Report reasons
 
-p1 := 359 ; Player 1
-p2 := 381 ; Player 2
-p3 := 403 ; Player 3
-p4 := 456 ; Player 4
-p5 := 477 ; Player 5
-p6 := 586 ; Player 6
-p7 := 611 ; Player 7
-p8 := 634 ; Player 8
-p9 := 656 ; Player 9
-p10 := 678 ; Player 10
+p1 := 359,  p2 := 381, p3 := 403, p4 := 456, p5 := 477
+p6 := 586, p7 := 611, p8 := 634, p9 := 656, p10 := 678
+; Players 1 to 10
 
 co := 373 ; Abusive comms
 gr := 421 ; Griefing
@@ -26,10 +22,17 @@ wh := 467 ; Wall hack
 ah := 520 ; Aim hack
 oh := 565 ; Other hacking
 
-^a::Reload
-
-^0:: Loop {
-    Click pX1 p1 
-    Click pX2 ah 
-    Click 814 640 ; Submit button, don't change
+^x:: {
+    global loopToggle := 1
+    while loopToggle {
+        MouseClick("left", pX1, p1) ; This last variable (p1, p2, ..., p9, p10)
+        Sleep sleepTime
+        MouseClick("left", pX2, ah) ; This last variable too (co, gr, wh, ah, oh)
+        Sleep sleepTime
+        MouseClick("left", 814, 640) ; Submit button, don't change
+        Sleep sleepTime
+    }
 }
+
+#HotIf loopToggle
+^a:: global loopToggle := 0
